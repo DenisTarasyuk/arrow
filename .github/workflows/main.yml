@@ -217,7 +217,7 @@ jobs:
     name: Build jar files
     runs-on: macos-latest
     needs:
-      - build-cpp-ubuntu
+      # - build-cpp-ubuntu
       - build-cpp-macos
     steps:
       - name: Checkout Arrow
