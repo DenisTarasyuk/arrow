@@ -37,6 +37,57 @@ jobs:
           ref: testBuild
           submodules: recursive
 
+      - name: Free up disk space
+        if: runner.os == 'Linux' && runner.arch == 'X64'
+        shell: bash
+        run: |
+          df -h
+          echo "::group::/usr/local/*"
+          du -hsc /usr/local/*
+          echo "::endgroup::"
+          echo "::group::/usr/local/bin/*"
+          du -hsc /usr/local/bin/*
+          echo "::endgroup::"
+          # ~1GB (From 1.2GB to 214MB)
+          sudo rm -rf \
+            /usr/local/bin/aliyun \
+            /usr/local/bin/azcopy \
+            /usr/local/bin/bicep \
+            /usr/local/bin/cmake-gui \
+            /usr/local/bin/cpack \
+            /usr/local/bin/helm \
+            /usr/local/bin/hub \
+            /usr/local/bin/kubectl \
+            /usr/local/bin/minikube \
+            /usr/local/bin/node \
+            /usr/local/bin/packer \
+            /usr/local/bin/pulumi* \
+            /usr/local/bin/stack \
+            /usr/local/bin/terraform || :
+          echo "::group::/usr/local/share/*"
+          du -hsc /usr/local/share/*
+          echo "::endgroup::"
+          # 1.3GB
+          sudo rm -rf /usr/local/share/powershell || :
+          echo "::group::/opt/*"
+          du -hsc /opt/*
+          echo "::endgroup::"
+          echo "::group::/opt/hostedtoolcache/*"
+          du -hsc /opt/hostedtoolcache/*
+          echo "::endgroup::"
+          # 5.3GB
+          sudo rm -rf /opt/hostedtoolcache/CodeQL || :
+          # 1.4GB
+          sudo rm -rf /opt/hostedtoolcache/go || :
+          # 489MB
+          sudo rm -rf /opt/hostedtoolcache/PyPy || :
+          # 376MB
+          sudo rm -rf /opt/hostedtoolcache/node || :
+          # Remove Web browser packages
+          sudo apt-get purge -y -f firefox \
+                  google-chrome-stable \
+                  microsoft-edge-stable
+          df -h
       - name: Set up Python by actions/setup-python
         if: runner.arch == 'X64'
         uses: actions/setup-python@v4
@@ -133,7 +184,13 @@ jobs:
           # Homebrew's RE2 is installed, its header file may be used.
           # We uninstall Homebrew's RE2 to ensure using bundled RE2.
           brew uninstall grpc || : # gRPC depends on RE2
-          brew uninstall re2 || :
+          brew uninstall grpc@1.54 || : # gRPC 1.54 may be installed too
+          brew uninstall re2
+          # We want to use bundled Protobuf for static linking. If
+          # Homebrew's Protobuf is installed, its library file may be
+          # used on test  We uninstall Homebrew's Protobuf to ensure using
+          # bundled Protobuf.
+          brew uninstall protobuf
           brew bundle --file=arrow/java/Brewfile
       - name: Build C++ libraries
         env:
@@ -166,7 +223,7 @@ jobs:
       - name: Checkout Arrow
         uses: actions/checkout@v3
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           path: arrow
           ref: testBuild
           submodules: recursive
@@ -195,7 +252,7 @@ jobs:
         run: |
           set -e
           pushd arrow/java
-          mvn versions:set -DnewVersion=12.0.1-SNAPSHOT
+          mvn versions:set -DnewVersion=13.0.0-SNAPSHOT
           popd
           arrow/ci/scripts/java_full_build.sh \
             $GITHUB_WORKSPACE/arrow \
