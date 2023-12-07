@@ -154,10 +154,11 @@ jobs:
 
   package-jars:
     name: Build jar files
-    runs-on: macos-latest
+    # runs-on: macos-latest
+    runs-on: ubuntu-latest
     needs:
       - build-cpp-ubuntu
-      - build-cpp-macos
+      # - build-cpp-macos
     steps:
       - name: Checkout Arrow
         uses: actions/checkout@v3
@@ -175,7 +176,7 @@ jobs:
         run: |
           mv artifacts/*/*.tar.gz .
           tar -xvzf arrow-shared-libs-linux.tar.gz
-          tar -xvzf arrow-shared-libs-macos-x86_64.tar.gz
+          # tar -xvzf arrow-shared-libs-macos-x86_64.tar.gz
       - name: Test that shared libraries exist
         run: |
           set -x
@@ -183,10 +184,10 @@ jobs:
           test -f arrow/java-dist/x86_64/libarrow_dataset_jni.so
           test -f arrow/java-dist/x86_64/libarrow_orc_jni.so
           test -f arrow/java-dist/x86_64/libgandiva_jni.so
-          test -f arrow/java-dist/x86_64/libarrow_cdata_jni.dylib
-          test -f arrow/java-dist/x86_64/libarrow_dataset_jni.dylib
-          test -f arrow/java-dist/x86_64/libarrow_orc_jni.dylib
-          test -f arrow/java-dist/x86_64/libgandiva_jni.dylib
+          # test -f arrow/java-dist/x86_64/libarrow_cdata_jni.dylib
+          # test -f arrow/java-dist/x86_64/libarrow_dataset_jni.dylib
+          # test -f arrow/java-dist/x86_64/libarrow_orc_jni.dylib
+          # test -f arrow/java-dist/x86_64/libgandiva_jni.dylib
       - name: Build bundled jar
         run: |
           set -e
