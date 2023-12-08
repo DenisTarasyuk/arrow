@@ -26,8 +26,8 @@ on: workflow_dispatch
 jobs:
 
   build-cpp-ubuntu:
-    name: Build C++ libraries Ubuntu
-    runs-on: '${{ matrix.platform.runs_on }}'
+    name: ${{ matrix.title }}
+    runs-on: ${{ matrix.runs-on }}
     strategy:
       fail-fast: false
       matrix:
