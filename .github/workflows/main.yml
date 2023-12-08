@@ -27,7 +27,13 @@ jobs:
 
   build-cpp-ubuntu:
     name: Build C++ libraries Ubuntu
-    runs-on: ubuntu-latest
+    runs-on: {{ '${{ matrix.platform.runs_on }}' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          # - { runs_on: ["ubuntu-latest"], arch: "x86_64"}
+          - { runs_on: ["buildjet-2vcpu-ubuntu-2204-arm"], arch: "aarch_64" }
     steps:
       - name: Checkout Arrow
         uses: actions/checkout@v3
