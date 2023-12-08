@@ -33,7 +33,7 @@ jobs:
       matrix:
         platform:
           # - { runs_on: ["ubuntu-latest"], arch: "x86_64"}
-          - { runs_on: ["buildjet-2vcpu-ubuntu-2204-arm"], arch: "aarch_64" }
+          - { runs_on: ["buildjet-2vcpu-ubuntu-2204-arm"], arch: "arm64v8" }
     steps:
       - name: Checkout Arrow
         uses: actions/checkout@v3
