@@ -257,3 +257,8 @@ jobs:
           arrow/ci/scripts/java_full_build.sh \
             $GITHUB_WORKSPACE/arrow \
             $GITHUB_WORKSPACE/arrow/java-dist
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: arrow-jar
+          path: arrow/java-dist/*.jar
