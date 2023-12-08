@@ -281,4 +281,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: arrow-jar
-          path: arrow/java-dist/*.jar
+          path: arrow/java-dist/arrow-gandiva-13.0.0-SNAPSHOT.jar
