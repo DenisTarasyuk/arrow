@@ -41,7 +41,7 @@ jobs:
           - arch: arm64v8
             clang-tools: "10"
             llvm: "10"
-            runs-on: buildjet-2vcpu-ubuntu-2204-arm
+            runs-on: buildjet-4vcpu-ubuntu-2204-arm
             title: ARM64 Ubuntu 20.04
             ubuntu: "20.04"
     env:
