@@ -38,12 +38,12 @@ jobs:
             runs-on: ubuntu-latest
             title: AMD64 Ubuntu 22.04
             ubuntu: "22.04"
-          - arch: arm64v8
-            clang-tools: "10"
-            llvm: "10"
-            runs-on: buildjet-4vcpu-ubuntu-2204-arm
-            title: ARM64 Ubuntu 20.04
-            ubuntu: "20.04"
+          # - arch: arm64v8
+          #   clang-tools: "10"
+          #   llvm: "10"
+          #   runs-on: buildjet-4vcpu-ubuntu-2204-arm
+          #   title: ARM64 Ubuntu 20.04
+          #   ubuntu: "20.04"
     env:
       ARCH: ${{ matrix.arch }}
       CLANG_TOOLS: ${{ matrix.clang-tools }}
@@ -237,7 +237,7 @@ jobs:
     name: Build jar files
     runs-on: macos-latest
     needs:
-      # - build-cpp-ubuntu
+      - build-cpp-ubuntu
       - build-cpp-macos
     steps:
       - name: Checkout Arrow
@@ -255,15 +255,15 @@ jobs:
       - name: Decompress artifacts
         run: |
           mv artifacts/*/*.tar.gz .
-          # tar -xvzf arrow-shared-libs-linux.tar.gz
+          tar -xvzf arrow-shared-libs-linux.tar.gz
           tar -xvzf arrow-shared-libs-macos-x86_64.tar.gz
       - name: Test that shared libraries exist
         run: |
           set -x
-          # test -f arrow/java-dist/x86_64/libarrow_cdata_jni.so
-          # test -f arrow/java-dist/x86_64/libarrow_dataset_jni.so
-          # test -f arrow/java-dist/x86_64/libarrow_orc_jni.so
-          # test -f arrow/java-dist/x86_64/libgandiva_jni.so
+          test -f arrow/java-dist/x86_64/libarrow_cdata_jni.so
+          test -f arrow/java-dist/x86_64/libarrow_dataset_jni.so
+          test -f arrow/java-dist/x86_64/libarrow_orc_jni.so
+          test -f arrow/java-dist/x86_64/libgandiva_jni.so
           test -f arrow/java-dist/x86_64/libarrow_cdata_jni.dylib
           test -f arrow/java-dist/x86_64/libarrow_dataset_jni.dylib
           test -f arrow/java-dist/x86_64/libarrow_orc_jni.dylib
