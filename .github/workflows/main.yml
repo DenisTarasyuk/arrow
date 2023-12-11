@@ -32,7 +32,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - arch: amd64
+          # - arch: amd64
+          #   clang-tools: "14"
+          #   llvm: "14"
+          #   runs-on: ubuntu-latest
+          #   title: AMD64 Ubuntu 22.04
+          #   ubuntu: "22.04"
+          - arch: aarch_64
             clang-tools: "14"
             llvm: "14"
             runs-on: ubuntu-latest
