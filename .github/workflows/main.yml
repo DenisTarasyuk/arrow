@@ -137,9 +137,11 @@ jobs:
             sudo rm -rf /opt/hostedtoolcache/CodeQL || :
             df -h
       - name: Set Swap Space
-        uses: pierotofy/set-swap-space@master
+        uses: thejerrybao/setup-swap-space@v1
         with:
+          swap-space-path: /swapfile
           swap-size-gb: 16
+          remove-existing-swap-files: false
       - name: Build C++ libraries
         # env:
         #   AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
