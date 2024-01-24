@@ -29,8 +29,8 @@ on:
 jobs:
 
   build-cpp-ubuntu:
-    name: ${{ matrix.title }}
-    runs-on: ${{ matrix.runs-on }}
+    name: ${{ matrix.platform.title }}
+    runs-on: ${{ matrix.platform.runs-on }}
     strategy:
       fail-fast: false
       matrix:
@@ -55,9 +55,9 @@ jobs:
           #   title: ARM64 Ubuntu 20.04
           #   ubuntu: "20.04"
     env:
-      ARCH: ${{ matrix.arch }}
-      CLANG_TOOLS: ${{ matrix.clang-tools }}
-      LLVM: ${{ matrix.llvm }}
+      ARCH: ${{ matrix.platform.arch }}
+      CLANG_TOOLS: ${{ matrix.platform.clang-tools }}
+      LLVM: ${{ matrix.platform.llvm }}
     steps:
       - name: Checkout Arrow
         uses: actions/checkout@v3
