@@ -41,13 +41,16 @@ jobs:
             llvm: "14"
             title: AMD64 Ubuntu 22.04
             ubuntu: "22.04"
+            isARM: false
           - runs-on: ubuntu-latest 
-            if: ${{ inputs.build_arm }}
+            isARM: ${{ inputs.build_arm }}
             arch: aarch_64
             clang-tools: "14"
             llvm: "14"
             title: AMD64 Ubuntu 22.04
             ubuntu: "22.04"
+        exclude: 
+          - {isARM: true}
           # - arch: arm64v8
           #   clang-tools: "10"
           #   llvm: "10"
