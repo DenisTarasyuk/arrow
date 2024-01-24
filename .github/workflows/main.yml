@@ -19,10 +19,13 @@
 # NOTE: must set "Crossbow" as name to have the badge links working in the
 # github comment reports!
 name: Crossbow
-on: workflow_dispatch
-
-
-
+on: 
+  workflow_dispatch:
+    inputs:
+      build_arm:
+        description: 'Build ARM binary'
+        required: true
+        type: boolean
 jobs:
 
   build-cpp-ubuntu:
@@ -33,14 +36,14 @@ jobs:
       matrix:
         platform:
           - runs-on: ubuntu-latest
-            if: ${{ success() }}
+            if: ${{ inputs.build_arm }}
             arch: amd64
             clang-tools: "14"
             llvm: "14"
             title: AMD64 Ubuntu 22.04
             ubuntu: "22.04"
           - runs-on: ubuntu-latest 
-            if: ${{ failure() }}
+            if: ${{ inputs.build_arm }}
             arch: aarch_64
             clang-tools: "14"
             llvm: "14"
