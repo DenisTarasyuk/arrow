@@ -50,7 +50,7 @@ jobs:
             title: AMD64 Ubuntu 22.04
             ubuntu: "22.04"
         exclude: 
-          - strategy.isARM: true
+          - platform.isARM: true
           # - arch: arm64v8
           #   clang-tools: "10"
           #   llvm: "10"
