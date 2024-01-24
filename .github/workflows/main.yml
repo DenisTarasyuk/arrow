@@ -36,7 +36,6 @@ jobs:
       matrix:
         platform:
           - runs-on: ubuntu-latest
-            if: ${{ inputs.build_arm }}
             arch: amd64
             clang-tools: "14"
             llvm: "14"
