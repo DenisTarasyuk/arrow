@@ -31,25 +31,27 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          # - arch: amd64
-          #   clang-tools: "14"
-          #   llvm: "14"
-          #   runs-on: ubuntu-latest
-          #   title: AMD64 Ubuntu 22.04
-          #   ubuntu: "22.04"
-          # - arch: aarch_64
-          #   clang-tools: "14"
-          #   llvm: "14"
-          #   runs-on: ubuntu-latest
-          #   title: AMD64 Ubuntu 22.04
-          #   ubuntu: "22.04"
-          - arch: arm64v8
-            clang-tools: "10"
-            llvm: "10"
-            runs-on: buildjet-4vcpu-ubuntu-2204-arm
-            title: ARM64 Ubuntu 20.04
-            ubuntu: "20.04"
+        platform:
+          - runs-on: ubuntu-latest
+            if: ${{ success() }}
+            arch: amd64
+            clang-tools: "14"
+            llvm: "14"
+            title: AMD64 Ubuntu 22.04
+            ubuntu: "22.04"
+          - runs-on: ubuntu-latest 
+            if: ${{ failure() }}
+            arch: aarch_64
+            clang-tools: "14"
+            llvm: "14"
+            title: AMD64 Ubuntu 22.04
+            ubuntu: "22.04"
+          # - arch: arm64v8
+          #   clang-tools: "10"
+          #   llvm: "10"
+          #   runs-on: buildjet-4vcpu-ubuntu-2204-arm
+          #   title: ARM64 Ubuntu 20.04
+          #   ubuntu: "20.04"
     env:
       ARCH: ${{ matrix.arch }}
       CLANG_TOOLS: ${{ matrix.clang-tools }}
