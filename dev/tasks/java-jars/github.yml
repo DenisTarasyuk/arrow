@@ -25,6 +25,10 @@ jobs:
     name: Build C++ libraries Ubuntu
     runs-on: ubuntu-latest
     steps:
+      - name: Test
+        shell: bash
+        run: |
+              echo {{ test_param }}
       {{ macros.github_checkout_arrow()|indent }}
       {{ macros.github_free_space()|indent }}
       {{ macros.github_install_archery()|indent }}
