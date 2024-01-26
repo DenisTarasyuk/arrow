@@ -53,13 +53,13 @@ jobs:
             df -h
             sudo rm -rf /opt/hostedtoolcache/CodeQL || :
             df -h
-      - name: Set Swap Space
-        continue-on-error: true
-        uses: thejerrybao/setup-swap-space@v1
-        with:
-          swap-space-path: /swapfile
-          swap-size-gb: 16
-          remove-existing-swap-files: false
+      - name: Set Swap
+        shell: bash
+        run: |
+            sudo fallocate -l 16G /swapfile
+            sudo chmod 600 /swapfile
+            sudo mkswap /swapfile
+            sudo swapon /swapfile
       - name: Build C++ libraries
         env:
         {{ macros.github_set_sccache_envvars()|indent(8) }}
