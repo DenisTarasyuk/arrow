@@ -74,7 +74,7 @@ jobs:
       - name: Compress into single artifact to keep directory structure
         run: tar -cvzf arrow-shared-libs-linux-{{ arch }}.tar.gz arrow/java-dist/
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ubuntu-shared-lib-{{ arch }}
           path: arrow-shared-libs-linux-{{ arch }}.tar.gz
@@ -93,9 +93,9 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - { runs_on: ["macos-12"], arch: "x86_64"}
+          - { runs_on: ["macos-13"], arch: "x86_64"}
     env:
-      MACOSX_DEPLOYMENT_TARGET: "12.0"
+      MACOSX_DEPLOYMENT_TARGET: "13.0"
     steps:
       {{ macros.github_checkout_arrow()|indent }}
       - name: Set up Python
@@ -103,6 +103,14 @@ jobs:
         with:
           cache: 'pip'
           python-version: 3.12
+      - name: Install Cmake 3.xx
+        run: |
+          mkdir -p homebrew-custom/Formula
+          cd homebrew-custom
+          curl -o Formula/cmake.rb https://raw.githubusercontent.com/Homebrew/homebrew-core/79832b24810b47cc6436a735588f137d0f3bb993/Formula/c/cmake.rb
+          brew install ./Formula/cmake.rb
+          brew pin cmake
+          cmake --version
       - name: Install Archery
         shell: bash
         run: pip install -e arrow/dev/archery[all]
@@ -154,7 +162,7 @@ jobs:
       - name: Compress into single artifact to keep directory structure
         run: tar -cvzf arrow-shared-libs-macos-{{ arch }}.tar.gz arrow/java-dist/
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macos-shared-lib-{{ arch }}
           path: arrow-shared-libs-macos-{{ arch }}.tar.gz
@@ -188,14 +196,14 @@ jobs:
         shell: bash
         run: tar -cvzf arrow-shared-libs-windows.tar.gz arrow/java-dist/
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: windows-shared-lib
           path: arrow-shared-libs-windows.tar.gz
 
   package-jars:
     name: Build jar files
-    runs-on: macos-12
+    runs-on: macos-13
     needs:
       - build-cpp-ubuntu
       - build-cpp-macos
